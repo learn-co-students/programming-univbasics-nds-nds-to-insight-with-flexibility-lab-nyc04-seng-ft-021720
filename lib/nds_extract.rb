@@ -1,5 +1,6 @@
 # Provided, don't edit
 require 'directors_database'
+require 'pp'
 
 # A method we're giving you. This "flattens"  Arrays of Arrays so: [[1,2],
 # [3,4,5], [6]] => [1,2,3,4,5,6].
@@ -34,24 +35,39 @@ end
 # Your code after this point
 
 def movies_with_director_key(name, movies_collection)
-  # GOAL: For each Hash in an Array (movies_collection), provide a collection
-  # of movies and a directors name to the movie_with_director_name method
-  # and accumulate the returned Array of movies into a new Array that's
-  # returned by this method.
-  #
-  # INPUT:
-  # * name: A director's name
-  # * movies_collection: An Array of Hashes where each Hash represents a movie
-  #
-  # RETURN:
-  #
-  # Array of Hashes where each Hash represents a movie; however, they should all have a
-  # :director_name key. This addition can be done by using the provided
-  # movie_with_director_name method
+
+ i = 0
+ results_array = []
+
+  while i < movies_collection.length
+    movies_collection[i][:director_name] = name
+  
+    results_array.push(movies_collection[i])
+    i += 1
+  end
+  results_array
 end
 
 
 def gross_per_studio(collection)
+  
+  result = {}
+  i = 0
+  
+  while i < collection.length do
+    studio_name = collection[i][:studio]
+    profit = collection[i][:worldwide_gross]
+     
+      if !result[studio_name]  
+      result[studio_name] = profit
+      
+      else
+        result[studio_name] += profit
+      end
+    i += 1
+  end
+result
+  
   # GOAL: Given an Array of Hashes where each Hash represents a movie,
   # return a Hash that includes the total worldwide_gross of all the movies from
   # each studio.
@@ -66,16 +82,21 @@ def gross_per_studio(collection)
 end
 
 def movies_with_directors_set(source)
-  # GOAL: For each director, find their :movies Array and stick it in a new Array
-  #
-  # INPUT:
-  # * source: An Array of Hashes containing director information including
-  # :name and :movies
-  #
-  # RETURN:
-  #
-  # Array of Arrays containing all of a director's movies. Each movie will need
-  # to have a :director_name key added to it.
+
+  i = 0
+  director_catalogue_array = []
+  
+  while i < source.length do
+    name = source[i][:name]
+    movies_collection = source[i][:movies]
+   
+      director_catalogue = movies_with_director_key(name, movies_collection)
+  
+      director_catalogue_array.push(director_catalogue)
+      i += 1
+      
+  end
+ director_catalogue_array
 end
 
 # ----------------    End of Your Code Region --------------------
