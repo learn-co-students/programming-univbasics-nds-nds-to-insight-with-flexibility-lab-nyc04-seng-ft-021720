@@ -23,6 +23,9 @@ describe 'provided method' do
   end
 end
 
+# given a director's name and titles of their movies in a AoH
+# need to return hashes with the directors name and a title in each.
+
 describe 'movies_with_director_key' do
   it 'adds a :director_name key an AoH of movies' do
     dir_name = "Byron Poodle"
