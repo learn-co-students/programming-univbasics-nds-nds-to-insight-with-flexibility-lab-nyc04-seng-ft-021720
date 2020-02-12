@@ -21,7 +21,7 @@ def flatten_a_o_a(aoa)
 end
 
 def movie_with_director_name(director_name, movie_data)
-  { 
+  {
     :title => movie_data[:title],
     :worldwide_gross => movie_data[:worldwide_gross],
     :release_year => movie_data[:release_year],
@@ -38,7 +38,14 @@ def movies_with_director_key(name, movies_collection)
   # of movies and a directors name to the movie_with_director_name method
   # and accumulate the returned Array of movies into a new Array that's
   # returned by this method.
-  #
+  result = []
+  index = 0
+  while index < movies_collection.length do
+    movie_data = movies_collection[index]
+    result << movie_with_director_name(name, movie_data)
+    index += 1
+  end
+  result
   # INPUT:
   # * name: A director's name
   # * movies_collection: An Array of Hashes where each Hash represents a movie
@@ -63,11 +70,39 @@ def gross_per_studio(collection)
   #
   # Hash whose keys are the studio names and whose values are the sum
   # total of all the worldwide_gross numbers for every movie in the input Hash
+
+  index = 0
+  result = {}
+
+  while index < collection.length do
+    movie = collection[index]
+    if !result[movie[:studio]]
+      result[movie[:studio]] = movie[:worldwide_gross]
+    else
+      result[movie[:studio]] += movie[:worldwide_gross]
+    end
+    index += 1
+  end
+  result
+#  studio_grosses.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}}
+
+  # End result should be
+  # "Alpha Films" => 40
+  # "Omega Flims" => 30
 end
 
 def movies_with_directors_set(source)
   # GOAL: For each director, find their :movies Array and stick it in a new Array
-  #
+  index = 0
+  movies_array = Array.new
+  while index < source.length do
+    dir_info_hash = source[index]
+    director_name = dir_info_hash[:name]
+    directors_movies = dir_info_hash[:movies]
+    movies_array << movies_with_director_key(director_name, directors_movies)
+    index += 1
+  end
+  movies_array
   # INPUT:
   # * source: An Array of Hashes containing director information including
   # :name and :movies
